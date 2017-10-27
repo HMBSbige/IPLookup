@@ -1,23 +1,26 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
 
 namespace IPLookup
 {
-    static class IPIPdotNET
+    class IPIPdotNET
     {
-        public static bool EnableFileWatch = false;
+        public bool EnableFileWatch = false;
 
-        private static int offset;
-        private static uint[] index = new uint[256];
-        private static byte[] dataBuffer;
-        private static byte[] indexBuffer;
-        private static long lastModifyTime = 0L;
-        private static string ipFile;
-        private static readonly object @lock = new object();
+        private int offset;
+        private readonly uint[] index = new uint[256];
+        private byte[] dataBuffer;
+        private byte[] indexBuffer;
+        private long lastModifyTime;
+        private string ipFile;
+        private readonly object @lock = new object();
+        private string _filename;
 
-        public static void Load(string filename)
+        public void Load(string filename)
         {
+            _filename = filename;
             ipFile = new FileInfo(filename).FullName;
             Load();
             if (EnableFileWatch)
@@ -26,38 +29,44 @@ namespace IPLookup
             }
         }
 
-        public static string[] Find(string ip)
+        public string[] Find(string ip)
         {
             lock (@lock)
             {
-                var ips = ip.Split('.');
-                var ip_prefix_value = int.Parse(ips[0]);
-                long ip2long_value = BytesToLong(byte.Parse(ips[0]), byte.Parse(ips[1]), byte.Parse(ips[2]),
-                    byte.Parse(ips[3]));
-                var start = index[ip_prefix_value];
-                var max_comp_len = offset - 1028;
-                long index_offset = -1;
-                var index_length = -1;
-                byte b = 0;
-                for (start = start * 8 + 1024; start < max_comp_len; start += 8)
+                try
                 {
-                    if (
-                        BytesToLong(indexBuffer[start + 0], indexBuffer[start + 1], indexBuffer[start + 2],
-                            indexBuffer[start + 3]) >= ip2long_value)
+                    var ips = ip.Split('.');
+                    var ip_prefix_value = int.Parse(ips[0]);
+                    long ip2long_value = BytesToLong(byte.Parse(ips[0]), byte.Parse(ips[1]), byte.Parse(ips[2]),
+                        byte.Parse(ips[3]));
+                    var start = index[ip_prefix_value];
+                    var max_comp_len = offset - 1028;
+                    long index_offset = -1;
+                    var index_length = -1;
+                    byte b = 0;
+                    for (start = start * 8 + 1024; start < max_comp_len; start += 8)
                     {
+                        if (BytesToLong(indexBuffer[start + 0], indexBuffer[start + 1], indexBuffer[start + 2],
+                                indexBuffer[start + 3])
+                            < ip2long_value)
+                            continue;
                         index_offset = BytesToLong(b, indexBuffer[start + 6], indexBuffer[start + 5],
                             indexBuffer[start + 4]);
                         index_length = 0xFF & indexBuffer[start + 7];
                         break;
                     }
+                    var areaBytes = new byte[index_length];
+                    Array.Copy(dataBuffer, offset + (int) index_offset - 1024, areaBytes, 0, index_length);
+                    return Encoding.UTF8.GetString(areaBytes).Split('\t');
                 }
-                var areaBytes = new byte[index_length];
-                Array.Copy(dataBuffer, offset + (int)index_offset - 1024, areaBytes, 0, index_length);
-                return Encoding.UTF8.GetString(areaBytes).Split('\t');
+                catch
+                {
+                    return new[]{@"IP 查询错误！"};
+                }
             }
         }
 
-        private static void Watch()
+        private void Watch()
         {
             var file = new FileInfo(ipFile);
             if (file.DirectoryName == null) return;
@@ -73,7 +82,7 @@ namespace IPLookup
             watcher.EnableRaisingEvents = true;
         }
 
-        private static void Load()
+        private void Load()
         {
             lock (@lock)
             {
@@ -99,9 +108,9 @@ namespace IPLookup
                             indexBuffer[loop * 4]);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    LoadError();
                 }
             }
         }
@@ -109,6 +118,12 @@ namespace IPLookup
         private static uint BytesToLong(byte a, byte b, byte c, byte d)
         {
             return ((uint)a << 24) | ((uint)b << 16) | ((uint)c << 8) | d;
+        }
+
+        private void LoadError()
+        {
+            MessageBox.Show(@"载入 "+ _filename+ @" 出错", @"出错啦", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            Environment.Exit(0);
         }
     }
 }

@@ -41,7 +41,7 @@
             this.Lookup_button.TabIndex = 0;
             this.Lookup_button.Text = "查询";
             this.Lookup_button.UseVisualStyleBackColor = true;
-            this.Lookup_button.Click += new System.EventHandler(this.button1_Click);
+            this.Lookup_button.Click += new System.EventHandler(this.Lookup_button_Click);
             // 
             // Result_Textbox
             // 
@@ -57,7 +57,7 @@
             this.IP_Textbox.Name = "IP_Textbox";
             this.IP_Textbox.Size = new System.Drawing.Size(105, 21);
             this.IP_Textbox.TabIndex = 2;
-            this.IP_Textbox.Text = "108.170.241.69";
+            this.IP_Textbox.Text = "218.30.48.174";
             // 
             // MainWindow
             // 

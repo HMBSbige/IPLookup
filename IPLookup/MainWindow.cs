@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IPLookup
@@ -15,20 +9,24 @@ namespace IPLookup
         public MainWindow()
         {
             InitializeComponent();
+            db1.Load(@"D:\Downloads\17monipdb_cn.dat");
+            db2.Load(@"D:\Downloads\17monipdb_en.dat");
         }
 
-        void RemoveEmptyString(ref string[] raw)
+        private readonly IPIPdotNET db1 = new IPIPdotNET(),db2 = new IPIPdotNET();
+
+        private static void RemoveEmptyString(ref string[] raw)
         {
             raw = raw.Where(s => !string.IsNullOrEmpty(s)).ToArray();
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void Lookup_button_Click(object sender, EventArgs e)
         {
-            IPIPdotNET.EnableFileWatch = true;
-            IPIPdotNET.Load(@"D:\Downloads\17monipdb.dat");
-            var location = IPIPdotNET.Find(IP_Textbox.Text);
-            RemoveEmptyString(ref location);
-            location = location.Where(s => !string.IsNullOrEmpty(s)).ToArray();
-            Result_Textbox.Text= string.Join(",", location);            
+            var cn_location = db1.Find(IP_Textbox.Text);
+            var en_location = db2.Find(IP_Textbox.Text);
+            RemoveEmptyString(ref cn_location);
+            RemoveEmptyString(ref en_location);
+
+            Result_Textbox.Text= string.Join(",", cn_location) + Environment.NewLine + string.Join(",", en_location);            
         }
     }
 }
