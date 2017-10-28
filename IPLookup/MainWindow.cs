@@ -8,9 +8,9 @@ namespace IPLookup
         public MainWindow()
         {
             InitializeComponent();
-            db1.Load(@"D:\Downloads\17monipdb_cn.dat");
-            db2.Load(@"D:\Downloads\17monipdb_en.dat");
-            _czip.Load(@"D:\Downloads\QQWry.dat");
+            db1.Load(@"17monipdb_cn.dat");
+            db2.Load(@"17monipdb_en.dat");
+            _czip.Load(@"QQWry.dat");
         }
 
         private readonly IPIPdotNET db1 = new IPIPdotNET(),db2 = new IPIPdotNET();
@@ -20,11 +20,10 @@ namespace IPLookup
         {
             var cn_location = db1.GetLocation(IP_Textbox.Text);
             var en_location = db2.GetLocation(IP_Textbox.Text);
-
-            Result_Textbox.Text= string.Join(",", cn_location) + Environment.NewLine + string.Join(",", en_location);
-
-            CZIP.location loc = _czip.GetLocation(IP_Textbox.Text);
-            Result_Textbox.Text += Environment.NewLine + loc.country + @"," + loc.area;
+            var location = _czip.GetLocation(IP_Textbox.Text);
+            Result_Textbox.Text= string.Join(",", cn_location) + Environment.NewLine + 
+                                 string.Join(",", en_location) + Environment.NewLine +
+                                 string.Join(",", location);
         }
     }
 }

@@ -57,7 +57,7 @@
             this.IP_Textbox.Name = "IP_Textbox";
             this.IP_Textbox.Size = new System.Drawing.Size(105, 21);
             this.IP_Textbox.TabIndex = 2;
-            this.IP_Textbox.Text = "218.30.48.174";
+            this.IP_Textbox.Text = "59.43.248.105";
             // 
             // MainWindow
             // 

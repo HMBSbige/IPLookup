@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 
@@ -35,37 +37,33 @@ namespace IPLookup
         {
             lock (@lock)
             {
-                try
+                if (!IsIPv4(ref ip))
                 {
-                    var ips = ip.Split('.');
-                    var ip_prefix_value = int.Parse(ips[0]);
-                    long ip2long_value = BytesToLong(byte.Parse(ips[0]), byte.Parse(ips[1]), byte.Parse(ips[2]),
-                        byte.Parse(ips[3]));
-                    var start = index[ip_prefix_value];
-                    var max_comp_len = offset - 1028;
-                    long index_offset = -1;
-                    var index_length = -1;
-                    byte b = 0;
-                    for (start = start * 8 + 1024; start < max_comp_len; start += 8)
-                    {
-                        if (BytesToLong(indexBuffer[start + 0], indexBuffer[start + 1], indexBuffer[start + 2],
-                                indexBuffer[start + 3])
-                            < ip2long_value)
-                            continue;
-                        index_offset = BytesToLong(b, indexBuffer[start + 6], indexBuffer[start + 5],
-                            indexBuffer[start + 4]);
-                        index_length = 0xFF & indexBuffer[start + 7];
-                        break;
-                    }
-                    var areaBytes = new byte[index_length];
-                    Array.Copy(dataBuffer, offset + (int) index_offset - 1024, areaBytes, 0, index_length);
-
-                    return RemoveEmptyString(Encoding.UTF8.GetString(areaBytes).Split('\t'));  
+                    return new[] { @"不是有效的IPv4地址" };
                 }
-                catch
+                var ips = ip.Split('.');
+                var ip_prefix_value = int.Parse(ips[0]);
+                long ip2long_value = BytesToLong(byte.Parse(ips[0]), byte.Parse(ips[1]), byte.Parse(ips[2]),
+                    byte.Parse(ips[3]));
+                var start = index[ip_prefix_value];
+                var max_comp_len = offset - 1028;
+                long index_offset = -1;
+                var index_length = -1;
+                for (start = start * 8 + 1024; start < max_comp_len; start += 8)
                 {
-                    return new[]{@"IP 查询错误！"};
+                    if (BytesToLong(indexBuffer[start + 0], indexBuffer[start + 1], indexBuffer[start + 2],
+                            indexBuffer[start + 3])
+                        < ip2long_value)
+                        continue;
+                    index_offset = BytesToLong(0, indexBuffer[start + 6], indexBuffer[start + 5],
+                        indexBuffer[start + 4]);
+                    index_length = 0xFF & indexBuffer[start + 7];
+                    break;
                 }
+                var areaBytes = new byte[index_length];
+                Array.Copy(dataBuffer, offset + (int) index_offset - 1024, areaBytes, 0, index_length);
+                var res = RemoveEmptyString(Encoding.UTF8.GetString(areaBytes).Split('\t'));
+                return res[0] == @"IPIP.NET" ? new[] { @"Reserved", @"Reserved" } : res;
             }
         }
 
@@ -111,9 +109,9 @@ namespace IPLookup
                             indexBuffer[loop * 4]);
                     }
                 }
-                catch (Exception)
+                catch
                 {
-                    LoadError();
+                    LoadError(_filename);
                 }
             }
         }
@@ -123,44 +121,70 @@ namespace IPLookup
             return ((uint)a << 24) | ((uint)b << 16) | ((uint)c << 8) | d;
         }
 
-        private void LoadError()
+        public static void LoadError(string filename)
         {
-            MessageBox.Show(@"载入 "+ _filename+ @" 出错", @"出错啦", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            MessageBox.Show(@"载入 "+ filename + @" 出错", @"出错啦", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             Environment.Exit(0);
         }
 
-        private static string[] RemoveEmptyString(string[] raw)
+        public static string[] RemoveEmptyString(string[] raw)
         {
             return raw.Where(s => !string.IsNullOrEmpty(s)).ToArray();
+        }
+
+        public static bool IsIPv4(ref string strIP)
+        {
+            try
+            {
+                strIP = strIP.Trim();
+                return IPAddress.Parse(strIP).AddressFamily == AddressFamily.InterNetwork;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 
     public class CZIP
     {
-        FileStream ipFile;
-        long ip;
+        private FileStream ipFile;
+        private long ip;
         private string ipfilePath;
-
-        public struct location
-        {
-            public string country, area;
-        }
 
         public void Load(string PATH)
         {
             ipfilePath = PATH;
+            try
+            {
+                ipFile = new FileStream(ipfilePath, FileMode.Open, FileAccess.Read);
+            }
+            catch
+            {
+                IPIPdotNET.LoadError(ipfilePath);
+            }
         }
 
-        public location GetLocation(string strIP)
+        public string[] GetLocation(string strIP)
         {
-            ip = IPToLong(strIP);
-            ipFile = new FileStream(ipfilePath, FileMode.Open, FileAccess.Read);
+            if (!IPIPdotNET.IsIPv4(ref strIP))
+            {
+                return new[] { @"不是有效的IPv4地址" };
+            }
+            byte[] ip_bytes = new byte[8];
+            string[] strArr = strIP.Split('.');
+            for (int i = 0; i < 4; ++i)
+            {
+                ip_bytes[i] = byte.Parse(strArr[3 - i]);
+            }
+            ip = BitConverter.ToInt64(ip_bytes, 0);
+
+            ipFile.Position = 0;
             long[] ipArray = BlockToArray(ReadIPBlock());
             long offset = SearchIP(ipArray, 0, ipArray.Length - 1) * 7 + 4;
             ipFile.Position += offset;//跳过起始IP
             ipFile.Position = ReadLongX(3) + 4;//跳过结束IP
-
-            location loc = new location();
+            
             int flag = ipFile.ReadByte();//读取标志
             if (flag == 1)//表示国家和地区被转向
             {
@@ -168,29 +192,28 @@ namespace IPLookup
                 flag = ipFile.ReadByte();//再读标志
             }
             long countryOffset = ipFile.Position;
-            loc.country = ReadString(flag);
+            var country = ReadString(flag);
+            if (country == @"纯真网络")
+            {
+                return new[] { @"IANA保留地址" };
+            } 
+            if (country == @" CZ88.NET")
+            {
+                return new[] { @"未知" };
+            }
 
             if (flag == 2)
             {
                 ipFile.Position = countryOffset + 3;
             }
             flag = ipFile.ReadByte();
-            loc.area = ReadString(flag);
-
-            ipFile.Close();
-            ipFile = null;
-            return loc;
-        }
-
-        private static long IPToLong(string strIP)
-        {
-            byte[] ip_bytes = new byte[8];
-            string[] strArr = strIP.Split('.');
-            for (int i = 0; i < 4; ++i)
+            var area = ReadString(flag);
+            if (area == @" CZ88.NET")
             {
-                ip_bytes[i] = byte.Parse(strArr[3 - i]);
+                area = @"";
             }
-            return BitConverter.ToInt64(ip_bytes, 0);
+
+            return IPIPdotNET.RemoveEmptyString(new[] {country, area});
         }
 
         long[] BlockToArray(byte[] ipBlock)
