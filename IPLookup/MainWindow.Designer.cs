@@ -31,11 +31,12 @@
             this.Lookup_button = new System.Windows.Forms.Button();
             this.Result_Textbox = new System.Windows.Forms.TextBox();
             this.IP_Textbox = new System.Windows.Forms.TextBox();
+            this.GetIP_button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Lookup_button
             // 
-            this.Lookup_button.Location = new System.Drawing.Point(195, 30);
+            this.Lookup_button.Location = new System.Drawing.Point(150, 30);
             this.Lookup_button.Name = "Lookup_button";
             this.Lookup_button.Size = new System.Drawing.Size(91, 29);
             this.Lookup_button.TabIndex = 0;
@@ -59,11 +60,22 @@
             this.IP_Textbox.TabIndex = 2;
             this.IP_Textbox.Text = "59.43.248.105";
             // 
+            // GetIP_button
+            // 
+            this.GetIP_button.Location = new System.Drawing.Point(247, 30);
+            this.GetIP_button.Name = "GetIP_button";
+            this.GetIP_button.Size = new System.Drawing.Size(98, 29);
+            this.GetIP_button.TabIndex = 3;
+            this.GetIP_button.Text = "获取公网IP";
+            this.GetIP_button.UseVisualStyleBackColor = true;
+            this.GetIP_button.Click += new System.EventHandler(this.GetIP_button_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 260);
+            this.Controls.Add(this.GetIP_button);
             this.Controls.Add(this.IP_Textbox);
             this.Controls.Add(this.Result_Textbox);
             this.Controls.Add(this.Lookup_button);
@@ -81,6 +93,7 @@
         private System.Windows.Forms.Button Lookup_button;
         private System.Windows.Forms.TextBox Result_Textbox;
         private System.Windows.Forms.TextBox IP_Textbox;
+        private System.Windows.Forms.Button GetIP_button;
     }
 }
 
