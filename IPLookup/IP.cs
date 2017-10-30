@@ -144,6 +144,24 @@ namespace IPLookup
                 return false;
             }
         }
+
+        public static string GetLocalIP()
+        {
+            string IP = @"0.0.0.0";
+            WebRequest wr = WebRequest.Create(@"https://myip.ipip.net/");
+            Stream s = wr.GetResponse().GetResponseStream();
+            if (s != null)
+            {
+                StreamReader sr = new StreamReader(s, Encoding.UTF8);
+                IP = sr.ReadToEnd();
+                int start = IP.IndexOf(@"当前 IP：", StringComparison.Ordinal) + 6;
+                int end = IP.IndexOf(@"  来自于：", start, StringComparison.Ordinal);
+                IP = IP.Substring(start, end - start);
+                sr.Close();
+                s.Close();
+            }
+            return IP;
+        }
     }
 
     public class CZIP

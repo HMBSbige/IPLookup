@@ -32,6 +32,8 @@
             this.Result_Textbox = new System.Windows.Forms.TextBox();
             this.IP_Textbox = new System.Windows.Forms.TextBox();
             this.GetIP_button = new System.Windows.Forms.Button();
+            this.localIP_Textbox = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Lookup_button
@@ -46,7 +48,7 @@
             // 
             // Result_Textbox
             // 
-            this.Result_Textbox.Location = new System.Drawing.Point(39, 78);
+            this.Result_Textbox.Location = new System.Drawing.Point(23, 79);
             this.Result_Textbox.Multiline = true;
             this.Result_Textbox.Name = "Result_Textbox";
             this.Result_Textbox.Size = new System.Drawing.Size(490, 121);
@@ -62,7 +64,7 @@
             // 
             // GetIP_button
             // 
-            this.GetIP_button.Location = new System.Drawing.Point(247, 30);
+            this.GetIP_button.Location = new System.Drawing.Point(404, 30);
             this.GetIP_button.Name = "GetIP_button";
             this.GetIP_button.Size = new System.Drawing.Size(98, 29);
             this.GetIP_button.TabIndex = 3;
@@ -70,11 +72,31 @@
             this.GetIP_button.UseVisualStyleBackColor = true;
             this.GetIP_button.Click += new System.EventHandler(this.GetIP_button_Click);
             // 
+            // localIP_Textbox
+            // 
+            this.localIP_Textbox.Location = new System.Drawing.Point(289, 35);
+            this.localIP_Textbox.Name = "localIP_Textbox";
+            this.localIP_Textbox.ReadOnly = true;
+            this.localIP_Textbox.Size = new System.Drawing.Size(100, 21);
+            this.localIP_Textbox.TabIndex = 4;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(427, 206);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 260);
+            this.ClientSize = new System.Drawing.Size(553, 260);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.localIP_Textbox);
             this.Controls.Add(this.GetIP_button);
             this.Controls.Add(this.IP_Textbox);
             this.Controls.Add(this.Result_Textbox);
@@ -94,6 +116,8 @@
         private System.Windows.Forms.TextBox Result_Textbox;
         private System.Windows.Forms.TextBox IP_Textbox;
         private System.Windows.Forms.Button GetIP_button;
+        private System.Windows.Forms.TextBox localIP_Textbox;
+        private System.Windows.Forms.Button button1;
     }
 }
 

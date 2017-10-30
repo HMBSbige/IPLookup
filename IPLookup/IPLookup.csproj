@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="aliyun_domain.cs" />
     <Compile Include="IP.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
@@ -80,6 +81,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\aliyun-openapi-net-sdk\aliyun-net-sdk-alidns\aliyun-net-sdk-alidns.csproj">
+      <Project>{a3a305dd-6cb0-421b-8dc5-314b89c752b1}</Project>
+      <Name>aliyun-net-sdk-alidns</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\aliyun-openapi-net-sdk\aliyun-net-sdk-core\aliyun-net-sdk-core.csproj">
+      <Project>{bb84cecb-295d-4772-a669-3726e511ccfa}</Project>
+      <Name>aliyun-net-sdk-core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

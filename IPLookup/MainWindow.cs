@@ -1,7 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Net;
-using System.Text;
 using System.Windows.Forms;
 
 namespace IPLookup
@@ -29,27 +26,14 @@ namespace IPLookup
                                  string.Join(",", location);
         }
 
-        private void GetIP_button_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            Result_Textbox.Text = GetLocalIP();
+            Result_Textbox.Text = aliyun_domain.Test().ToString();
         }
 
-        private string GetLocalIP()
+        private void GetIP_button_Click(object sender, EventArgs e)
         {
-            string IP = @"0.0.0.0";
-            WebRequest wr = WebRequest.Create("https://myip.ipip.net/");
-            Stream s = wr.GetResponse().GetResponseStream();
-            if (s != null)
-            {
-                StreamReader sr = new StreamReader(s, Encoding.UTF8);
-                IP = sr.ReadToEnd();
-                int start = IP.IndexOf(@"当前 IP：", StringComparison.Ordinal) + 6;
-                int end = IP.IndexOf(@"  来自于：", start, StringComparison.Ordinal);
-                IP = IP.Substring(start, end - start);
-                sr.Close();
-                s.Close();
-            }
-            return IP;
+            localIP_Textbox.Text = IPIPdotNET.GetLocalIP();
         }
     }
 }
