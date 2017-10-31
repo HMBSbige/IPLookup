@@ -11,13 +11,10 @@ namespace IPLookup
 {
     public class IPIPdotNET
     {
-        public bool EnableFileWatch = false;
-
         private int offset;
         private readonly uint[] index = new uint[256];
         private byte[] dataBuffer;
         private byte[] indexBuffer;
-        private long lastModifyTime;
         private string ipFile;
         private readonly object @lock = new object();
         private string _filename;
@@ -27,10 +24,6 @@ namespace IPLookup
             _filename = filename;
             ipFile = new FileInfo(filename).FullName;
             Load();
-            if (EnableFileWatch)
-            {
-                Watch();
-            }
         }
 
         public string[] GetLocation(string ip)
@@ -67,28 +60,11 @@ namespace IPLookup
             }
         }
 
-        private void Watch()
-        {
-            var file = new FileInfo(ipFile);
-            if (file.DirectoryName == null) return;
-            var watcher = new FileSystemWatcher(file.DirectoryName, file.Name) { NotifyFilter = NotifyFilters.LastWrite };
-            watcher.Changed += (s, e) =>
-            {
-                var time = File.GetLastWriteTime(ipFile).Ticks;
-                if (time > lastModifyTime)
-                {
-                    Load();
-                }
-            };
-            watcher.EnableRaisingEvents = true;
-        }
-
         private void Load()
         {
             lock (@lock)
             {
                 var file = new FileInfo(ipFile);
-                lastModifyTime = file.LastWriteTime.Ticks;
                 try
                 {
                     dataBuffer = new byte[file.Length];
@@ -131,20 +107,28 @@ namespace IPLookup
         {
             return raw.Where(s => !string.IsNullOrEmpty(s)).ToArray();
         }
-
+        /// <summary>
+        /// 判断字符串是否为点分十进制IPv4地址，如x.x.x.x
+        /// </summary>
+        /// <param name="strIP">需判断的字符串</param>
+        /// <returns>如果是返回真，否则返回假</returns>
         public static bool IsIPv4(ref string strIP)
         {
             try
             {
                 strIP = strIP.Trim();
-                return IPAddress.Parse(strIP).AddressFamily == AddressFamily.InterNetwork;
+                var tempIP = IPAddress.Parse(strIP);
+                return tempIP.ToString() == strIP && tempIP.AddressFamily == AddressFamily.InterNetwork;
             }
             catch
             {
                 return false;
             }
         }
-
+        /// <summary>
+        /// 获取公网IPv4地址
+        /// </summary>
+        /// <returns>公网IPv4地址点分十进制字符串</returns>
         public static string GetLocalIP()
         {
             string IP = @"0.0.0.0";
