@@ -17,9 +17,9 @@ namespace IPLookup
             AutoLookupIP = AutoLookup;
         }
         // Windows API Clipboard
-        [DllImport("user32.dll")]
+        [DllImport(@"user32.dll")]
         private static extern bool AddClipboardFormatListener(IntPtr hwnd);
-        [DllImport("user32.dll")]
+        [DllImport(@"user32.dll")]
         private static extern bool RemoveClipboardFormatListener(IntPtr hwnd);
 
         // 定义、声明回调
@@ -61,7 +61,7 @@ namespace IPLookup
                 return;
             dataGridView1.ClearSelection();
             dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Selected = true;
-            contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
+            TableRightMenu.Show(MousePosition.X, MousePosition.Y);
         }
 
         private void 复制ToolStripMenuItem_Click(object sender, EventArgs e)
