@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using LumiSoft.Net.DNS;
+using LumiSoft.Net.DNS.Client;
 
 namespace IPLookup
 {
@@ -50,7 +55,7 @@ namespace IPLookup
         }
         private void Lookup_button_Click(object sender, EventArgs e)
         {
-            LookupIP(IP_Textbox.Text);
+            LookupIP(ip_Textbox.Text);
         }
 
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -90,8 +95,8 @@ namespace IPLookup
                 var t = Clipboard.GetText();
                 if (IPIPdotNET.IsIPv4(ref t))
                 {
-                    IP_Textbox.Text = t;
-                    LookupIP(IP_Textbox.Text);
+                    ip_Textbox.Text = t;
+                    LookupIP(ip_Textbox.Text);
                 }
             }
         }
@@ -105,6 +110,75 @@ namespace IPLookup
             else
             {
                 AutoLookupIP = null;
+            }
+        }
+        
+        private static string[] Nslookup(string hostname)
+        {
+            try
+            {
+                var IPAddrs = Dns.GetHostAddresses(hostname);
+                return IPAddrs.Select(IPAddr => IPAddr.ToString()).ToArray();
+            }
+            catch (Exception e)
+            {
+                return new []{ e.Message };
+            }
+        }
+
+        private string[] Nslookup(string hostname,string[] DnsServers)
+        {
+            Dns_Client.DnsServers = DnsServers;
+            Dns_Client.UseDnsCache = false;
+            using (var dns = new Dns_Client())
+            {
+                var reponse = dns.Query(hostname, DNS_QType.A);
+
+                if (reponse == null || !reponse.ConnectionOk)
+                {
+                    HTTPStatus.Text = @"DNS 服务器无响应";
+                    return new []{@""};
+                }
+
+                HTTPStatus.Text = @"服务器响应: " + reponse.ResponseCode;
+
+                var iplist = new List<string>();
+                var records = reponse.Answers;
+                for (var i = 0; i < reponse.Answers.Length; i++)
+                {
+                    var record = records[i];
+                    if (record.RecordType == DNS_QType.A)
+                    {
+                        var aRec = (DNS_rr_A)record;
+                        
+                        iplist.Add(aRec.IP.ToString());
+                    }
+                }
+                return iplist.ToArray();
+            }
+        }
+
+        private void nslookupButton_Click(object sender, EventArgs e)
+        {
+            string[] iplist;
+            if (DNSServer.Text == @"系统DNS")
+            {
+                iplist = Nslookup(hostnameTextBox.Text);
+                if (iplist.Length != 0)
+                {
+                    hostIPTextBox.Text = iplist[0];
+                    HTTPStatus.Text = @"系统DNS解析成功";
+                }
+                else
+                {
+                    hostIPTextBox.Text = @"";
+                    HTTPStatus.Text = @"系统DNS解析失败";
+                }
+            }
+            else
+            {
+                iplist = Nslookup(hostnameTextBox.Text, new[] { DNSServer.Text });
+                hostIPTextBox.Text = iplist.Length != 0 ? iplist[0] : @"";
             }
         }
 

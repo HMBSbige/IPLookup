@@ -41,20 +41,31 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.IP_Textbox = new System.Windows.Forms.ToolStripTextBox();
-            this.Lookup_button = new System.Windows.Forms.ToolStripButton();
+            this.IPaddressLookup = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.ip_Textbox = new System.Windows.Forms.ToolStripTextBox();
+            this.iplookup_button = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.localIP_Textbox = new System.Windows.Forms.ToolStripTextBox();
-            this.GetIP_button = new System.Windows.Forms.ToolStripButton();
+            this.getIP_button = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.HttpResult = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.hostnameTextBox = new System.Windows.Forms.ToolStripTextBox();
+            this.nslookupButton = new System.Windows.Forms.ToolStripButton();
+            this.hostIPTextBox = new System.Windows.Forms.ToolStripTextBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.HTTPStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.DNSServer = new System.Windows.Forms.ToolStripComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.TableRightMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            this.IPaddressLookup.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.HttpResult.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -158,7 +169,7 @@
             // 
             this.tabPage1.Controls.Add(this.checkBox1);
             this.tabPage1.Controls.Add(this.dataGridView1);
-            this.tabPage1.Controls.Add(this.toolStrip1);
+            this.tabPage1.Controls.Add(this.IPaddressLookup);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -167,48 +178,44 @@
             this.tabPage1.Text = "IP查询";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // IPaddressLookup
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(728, 443);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "HTTP状态查询";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.IPaddressLookup.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.IPaddressLookup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
-            this.IP_Textbox,
-            this.Lookup_button,
+            this.ip_Textbox,
+            this.iplookup_button,
             this.toolStripSeparator1,
             this.localIP_Textbox,
-            this.GetIP_button,
+            this.getIP_button,
             this.toolStripSeparator2});
-            this.toolStrip1.Location = new System.Drawing.Point(3, 3);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(722, 25);
-            this.toolStrip1.TabIndex = 8;
-            this.toolStrip1.Text = "toolStrip1";
+            this.IPaddressLookup.Location = new System.Drawing.Point(3, 3);
+            this.IPaddressLookup.Name = "IPaddressLookup";
+            this.IPaddressLookup.Size = new System.Drawing.Size(722, 25);
+            this.IPaddressLookup.TabIndex = 8;
+            this.IPaddressLookup.Text = "toolStrip1";
             // 
-            // IP_Textbox
+            // toolStripLabel1
             // 
-            this.IP_Textbox.Name = "IP_Textbox";
-            this.IP_Textbox.Size = new System.Drawing.Size(100, 25);
-            this.IP_Textbox.Text = "59.43.248.105";
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(31, 22);
+            this.toolStripLabel1.Text = "IP：";
             // 
-            // Lookup_button
+            // ip_Textbox
             // 
-            this.Lookup_button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.Lookup_button.Image = ((System.Drawing.Image)(resources.GetObject("Lookup_button.Image")));
-            this.Lookup_button.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Lookup_button.Name = "Lookup_button";
-            this.Lookup_button.Size = new System.Drawing.Size(36, 22);
-            this.Lookup_button.Text = "查询";
-            this.Lookup_button.Click += new System.EventHandler(this.Lookup_button_Click);
+            this.ip_Textbox.Name = "ip_Textbox";
+            this.ip_Textbox.Size = new System.Drawing.Size(100, 25);
+            this.ip_Textbox.Text = "59.43.248.105";
+            // 
+            // iplookup_button
+            // 
+            this.iplookup_button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.iplookup_button.Image = ((System.Drawing.Image)(resources.GetObject("iplookup_button.Image")));
+            this.iplookup_button.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.iplookup_button.Name = "iplookup_button";
+            this.iplookup_button.Size = new System.Drawing.Size(36, 22);
+            this.iplookup_button.Text = "查询";
+            this.iplookup_button.Click += new System.EventHandler(this.Lookup_button_Click);
             // 
             // toolStripSeparator1
             // 
@@ -221,26 +228,111 @@
             this.localIP_Textbox.ReadOnly = true;
             this.localIP_Textbox.Size = new System.Drawing.Size(100, 25);
             // 
-            // GetIP_button
+            // getIP_button
             // 
-            this.GetIP_button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.GetIP_button.Image = ((System.Drawing.Image)(resources.GetObject("GetIP_button.Image")));
-            this.GetIP_button.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.GetIP_button.Name = "GetIP_button";
-            this.GetIP_button.Size = new System.Drawing.Size(71, 22);
-            this.GetIP_button.Text = "获取公网IP";
-            this.GetIP_button.Click += new System.EventHandler(this.GetIP_button_Click);
+            this.getIP_button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.getIP_button.Image = ((System.Drawing.Image)(resources.GetObject("getIP_button.Image")));
+            this.getIP_button.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.getIP_button.Name = "getIP_button";
+            this.getIP_button.Size = new System.Drawing.Size(71, 22);
+            this.getIP_button.Text = "获取公网IP";
+            this.getIP_button.Click += new System.EventHandler(this.GetIP_button_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripLabel1
+            // tabPage2
             // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(31, 22);
-            this.toolStripLabel1.Text = "IP：";
+            this.tabPage2.Controls.Add(this.statusStrip1);
+            this.tabPage2.Controls.Add(this.HttpResult);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(728, 443);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "HTTP状态查询";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // HttpResult
+            // 
+            this.HttpResult.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel2,
+            this.hostnameTextBox,
+            this.nslookupButton,
+            this.hostIPTextBox,
+            this.DNSServer});
+            this.HttpResult.Location = new System.Drawing.Point(3, 3);
+            this.HttpResult.Name = "HttpResult";
+            this.HttpResult.Size = new System.Drawing.Size(722, 25);
+            this.HttpResult.TabIndex = 1;
+            this.HttpResult.Text = "toolStrip2";
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(56, 22);
+            this.toolStripLabel2.Text = "主机名：";
+            // 
+            // hostnameTextBox
+            // 
+            this.hostnameTextBox.Name = "hostnameTextBox";
+            this.hostnameTextBox.Size = new System.Drawing.Size(200, 25);
+            this.hostnameTextBox.Text = "store.steampowered.com";
+            // 
+            // nslookupButton
+            // 
+            this.nslookupButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.nslookupButton.Image = ((System.Drawing.Image)(resources.GetObject("nslookupButton.Image")));
+            this.nslookupButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.nslookupButton.Name = "nslookupButton";
+            this.nslookupButton.Size = new System.Drawing.Size(78, 22);
+            this.nslookupButton.Text = "DNS 解析→";
+            this.nslookupButton.Click += new System.EventHandler(this.nslookupButton_Click);
+            // 
+            // hostIPTextBox
+            // 
+            this.hostIPTextBox.Name = "hostIPTextBox";
+            this.hostIPTextBox.ReadOnly = true;
+            this.hostIPTextBox.Size = new System.Drawing.Size(100, 25);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.HTTPStatus});
+            this.statusStrip1.Location = new System.Drawing.Point(3, 418);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(722, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // HTTPStatus
+            // 
+            this.HTTPStatus.Name = "HTTPStatus";
+            this.HTTPStatus.Size = new System.Drawing.Size(0, 17);
+            // 
+            // DNSServer
+            // 
+            this.DNSServer.Items.AddRange(new object[] {
+            "系统DNS",
+            "115.159.223.25",
+            "114.114.114.114",
+            "114.114.115.115",
+            "119.29.29.29",
+            "182.254.116.116",
+            "182.254.118.118",
+            "180.76.76.76",
+            "223.5.5.5",
+            "223.6.6.6",
+            "1.2.4.8",
+            "210.2.4.8",
+            "8.8.8.8",
+            "8.8.4.4",
+            "9.9.9.9"});
+            this.DNSServer.Name = "DNSServer";
+            this.DNSServer.Size = new System.Drawing.Size(121, 25);
+            this.DNSServer.Text = "系统DNS";
             // 
             // MainWindow
             // 
@@ -257,8 +349,14 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.IPaddressLookup.ResumeLayout(false);
+            this.IPaddressLookup.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.HttpResult.ResumeLayout(false);
+            this.HttpResult.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -276,14 +374,22 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripTextBox IP_Textbox;
-        private System.Windows.Forms.ToolStripButton Lookup_button;
+        private System.Windows.Forms.ToolStrip IPaddressLookup;
+        private System.Windows.Forms.ToolStripTextBox ip_Textbox;
+        private System.Windows.Forms.ToolStripButton iplookup_button;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripTextBox localIP_Textbox;
-        private System.Windows.Forms.ToolStripButton GetIP_button;
+        private System.Windows.Forms.ToolStripButton getIP_button;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStrip HttpResult;
+        private System.Windows.Forms.ToolStripTextBox hostnameTextBox;
+        private System.Windows.Forms.ToolStripButton nslookupButton;
+        private System.Windows.Forms.ToolStripTextBox hostIPTextBox;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel HTTPStatus;
+        private System.Windows.Forms.ToolStripComboBox DNSServer;
     }
 }
 
