@@ -36,7 +36,7 @@
             this.IPIPNETCN = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IPIPNETEn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CZDB = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TableRightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.Table1RightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -50,22 +50,32 @@
             this.getIP_button = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.Hostname = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Host = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Dalay = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.HTTPStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.HttpResult = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.hostnameTextBox = new System.Windows.Forms.ToolStripTextBox();
+            this.DNSServer = new System.Windows.Forms.ToolStripComboBox();
             this.nslookupButton = new System.Windows.Forms.ToolStripButton();
             this.hostIPTextBox = new System.Windows.Forms.ToolStripTextBox();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.HTTPStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.DNSServer = new System.Windows.Forms.ToolStripComboBox();
+            this.HTTPStatusButton = new System.Windows.Forms.ToolStripButton();
+            this.Table2RightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.TableRightMenu.SuspendLayout();
+            this.Table1RightMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.IPaddressLookup.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.HttpResult.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            this.HttpResult.SuspendLayout();
+            this.Table2RightMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -127,12 +137,12 @@
             this.CZDB.Name = "CZDB";
             this.CZDB.ReadOnly = true;
             // 
-            // TableRightMenu
+            // Table1RightMenu
             // 
-            this.TableRightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Table1RightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.复制ToolStripMenuItem});
-            this.TableRightMenu.Name = "contextMenuStrip1";
-            this.TableRightMenu.Size = new System.Drawing.Size(101, 26);
+            this.Table1RightMenu.Name = "contextMenuStrip1";
+            this.Table1RightMenu.Size = new System.Drawing.Size(101, 26);
             // 
             // 复制ToolStripMenuItem
             // 
@@ -245,6 +255,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.dataGridView2);
             this.tabPage2.Controls.Add(this.statusStrip1);
             this.tabPage2.Controls.Add(this.HttpResult);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -255,14 +266,78 @@
             this.tabPage2.Text = "HTTP状态查询";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // dataGridView2
+            // 
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView2.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Hostname,
+            this.Host,
+            this.Dalay,
+            this.Status});
+            this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView2.Location = new System.Drawing.Point(3, 28);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.ReadOnly = true;
+            this.dataGridView2.RowHeadersVisible = false;
+            this.dataGridView2.RowTemplate.Height = 23;
+            this.dataGridView2.Size = new System.Drawing.Size(722, 390);
+            this.dataGridView2.TabIndex = 3;
+            this.dataGridView2.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView2_CellMouseDown);
+            // 
+            // Hostname
+            // 
+            this.Hostname.HeaderText = "主机名";
+            this.Hostname.Name = "Hostname";
+            this.Hostname.ReadOnly = true;
+            // 
+            // Host
+            // 
+            this.Host.HeaderText = "IP";
+            this.Host.Name = "Host";
+            this.Host.ReadOnly = true;
+            // 
+            // Dalay
+            // 
+            this.Dalay.HeaderText = "延迟";
+            this.Dalay.Name = "Dalay";
+            this.Dalay.ReadOnly = true;
+            // 
+            // Status
+            // 
+            this.Status.HeaderText = "HTTP状态码";
+            this.Status.Name = "Status";
+            this.Status.ReadOnly = true;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.HTTPStatus});
+            this.statusStrip1.Location = new System.Drawing.Point(3, 418);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(722, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // HTTPStatus
+            // 
+            this.HTTPStatus.Name = "HTTPStatus";
+            this.HTTPStatus.Size = new System.Drawing.Size(308, 17);
+            this.HTTPStatus.Text = "服务器 IP 为空时，程序将自动根据IE代理获取HTTP状态";
+            // 
             // HttpResult
             // 
+            this.HttpResult.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.HttpResult.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel2,
             this.hostnameTextBox,
+            this.DNSServer,
             this.nslookupButton,
             this.hostIPTextBox,
-            this.DNSServer});
+            this.HTTPStatusButton});
             this.HttpResult.Location = new System.Drawing.Point(3, 3);
             this.HttpResult.Name = "HttpResult";
             this.HttpResult.Size = new System.Drawing.Size(722, 25);
@@ -280,37 +355,6 @@
             this.hostnameTextBox.Name = "hostnameTextBox";
             this.hostnameTextBox.Size = new System.Drawing.Size(200, 25);
             this.hostnameTextBox.Text = "store.steampowered.com";
-            // 
-            // nslookupButton
-            // 
-            this.nslookupButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.nslookupButton.Image = ((System.Drawing.Image)(resources.GetObject("nslookupButton.Image")));
-            this.nslookupButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.nslookupButton.Name = "nslookupButton";
-            this.nslookupButton.Size = new System.Drawing.Size(78, 22);
-            this.nslookupButton.Text = "DNS 解析→";
-            this.nslookupButton.Click += new System.EventHandler(this.nslookupButton_Click);
-            // 
-            // hostIPTextBox
-            // 
-            this.hostIPTextBox.Name = "hostIPTextBox";
-            this.hostIPTextBox.ReadOnly = true;
-            this.hostIPTextBox.Size = new System.Drawing.Size(100, 25);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.HTTPStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(3, 418);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(722, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // HTTPStatus
-            // 
-            this.HTTPStatus.Name = "HTTPStatus";
-            this.HTTPStatus.Size = new System.Drawing.Size(0, 17);
             // 
             // DNSServer
             // 
@@ -334,6 +378,46 @@
             this.DNSServer.Size = new System.Drawing.Size(121, 25);
             this.DNSServer.Text = "系统DNS";
             // 
+            // nslookupButton
+            // 
+            this.nslookupButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.nslookupButton.Image = ((System.Drawing.Image)(resources.GetObject("nslookupButton.Image")));
+            this.nslookupButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.nslookupButton.Name = "nslookupButton";
+            this.nslookupButton.Size = new System.Drawing.Size(48, 22);
+            this.nslookupButton.Text = "解析→";
+            this.nslookupButton.Click += new System.EventHandler(this.nslookupButton_Click);
+            // 
+            // hostIPTextBox
+            // 
+            this.hostIPTextBox.Name = "hostIPTextBox";
+            this.hostIPTextBox.Size = new System.Drawing.Size(100, 25);
+            this.hostIPTextBox.ToolTipText = "服务端 IP";
+            // 
+            // HTTPStatusButton
+            // 
+            this.HTTPStatusButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.HTTPStatusButton.Image = ((System.Drawing.Image)(resources.GetObject("HTTPStatusButton.Image")));
+            this.HTTPStatusButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.HTTPStatusButton.Name = "HTTPStatusButton";
+            this.HTTPStatusButton.Size = new System.Drawing.Size(90, 22);
+            this.HTTPStatusButton.Text = "查询HTTP状态";
+            this.HTTPStatusButton.Click += new System.EventHandler(this.HTTPStatusButton_Click);
+            // 
+            // Table2RightMenu
+            // 
+            this.Table2RightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.Table2RightMenu.Name = "contextMenuStrip1";
+            this.Table2RightMenu.Size = new System.Drawing.Size(153, 48);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Text = "复制";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -345,7 +429,7 @@
             this.Text = "Lookup IP";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.TableRightMenu.ResumeLayout(false);
+            this.Table1RightMenu.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -353,17 +437,19 @@
             this.IPaddressLookup.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            this.HttpResult.ResumeLayout(false);
-            this.HttpResult.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.HttpResult.ResumeLayout(false);
+            this.HttpResult.PerformLayout();
+            this.Table2RightMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.ContextMenuStrip TableRightMenu;
+        private System.Windows.Forms.ContextMenuStrip Table1RightMenu;
         private System.Windows.Forms.ToolStripMenuItem 复制ToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn index;
         private System.Windows.Forms.DataGridViewTextBoxColumn IP;
@@ -390,6 +476,14 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel HTTPStatus;
         private System.Windows.Forms.ToolStripComboBox DNSServer;
+        private System.Windows.Forms.ToolStripButton HTTPStatusButton;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Hostname;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Host;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Dalay;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Status;
+        private System.Windows.Forms.ContextMenuStrip Table2RightMenu;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 
