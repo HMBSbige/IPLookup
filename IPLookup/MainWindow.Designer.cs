@@ -51,10 +51,6 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.Hostname = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Host = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Dalay = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.HTTPStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.HttpResult = new System.Windows.Forms.ToolStrip();
@@ -64,8 +60,15 @@
             this.nslookupButton = new System.Windows.Forms.ToolStripButton();
             this.hostIPTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.HTTPStatusButton = new System.Windows.Forms.ToolStripButton();
+            this.ReadFromJsonButton = new System.Windows.Forms.ToolStripButton();
             this.Table2RightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.清空ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.导出列表到JSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Hostname = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Host = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Dalay = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.Table1RightMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -98,7 +101,7 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(722, 412);
+            this.dataGridView1.Size = new System.Drawing.Size(740, 404);
             this.dataGridView1.TabIndex = 6;
             this.dataGridView1.TabStop = false;
             this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
@@ -172,7 +175,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(736, 469);
+            this.tabControl1.Size = new System.Drawing.Size(754, 461);
             this.tabControl1.TabIndex = 8;
             // 
             // tabPage1
@@ -183,7 +186,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(728, 443);
+            this.tabPage1.Size = new System.Drawing.Size(746, 435);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "IP查询";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -201,7 +204,7 @@
             this.toolStripSeparator2});
             this.IPaddressLookup.Location = new System.Drawing.Point(3, 3);
             this.IPaddressLookup.Name = "IPaddressLookup";
-            this.IPaddressLookup.Size = new System.Drawing.Size(722, 25);
+            this.IPaddressLookup.Size = new System.Drawing.Size(740, 25);
             this.IPaddressLookup.TabIndex = 8;
             this.IPaddressLookup.Text = "toolStrip1";
             // 
@@ -261,7 +264,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(728, 443);
+            this.tabPage2.Size = new System.Drawing.Size(746, 435);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "HTTP状态查询";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -284,41 +287,17 @@
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.RowTemplate.Height = 23;
-            this.dataGridView2.Size = new System.Drawing.Size(722, 390);
+            this.dataGridView2.Size = new System.Drawing.Size(740, 382);
             this.dataGridView2.TabIndex = 3;
             this.dataGridView2.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView2_CellMouseDown);
-            // 
-            // Hostname
-            // 
-            this.Hostname.HeaderText = "主机名";
-            this.Hostname.Name = "Hostname";
-            this.Hostname.ReadOnly = true;
-            // 
-            // Host
-            // 
-            this.Host.HeaderText = "IP";
-            this.Host.Name = "Host";
-            this.Host.ReadOnly = true;
-            // 
-            // Dalay
-            // 
-            this.Dalay.HeaderText = "延迟";
-            this.Dalay.Name = "Dalay";
-            this.Dalay.ReadOnly = true;
-            // 
-            // Status
-            // 
-            this.Status.HeaderText = "HTTP状态码";
-            this.Status.Name = "Status";
-            this.Status.ReadOnly = true;
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.HTTPStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(3, 418);
+            this.statusStrip1.Location = new System.Drawing.Point(3, 410);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(722, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(740, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -337,10 +316,11 @@
             this.DNSServer,
             this.nslookupButton,
             this.hostIPTextBox,
-            this.HTTPStatusButton});
+            this.HTTPStatusButton,
+            this.ReadFromJsonButton});
             this.HttpResult.Location = new System.Drawing.Point(3, 3);
             this.HttpResult.Name = "HttpResult";
-            this.HttpResult.Size = new System.Drawing.Size(722, 25);
+            this.HttpResult.Size = new System.Drawing.Size(740, 25);
             this.HttpResult.TabIndex = 1;
             this.HttpResult.Text = "toolStrip2";
             // 
@@ -404,12 +384,24 @@
             this.HTTPStatusButton.Text = "查询HTTP状态";
             this.HTTPStatusButton.Click += new System.EventHandler(this.HTTPStatusButton_Click);
             // 
+            // ReadFromJsonButton
+            // 
+            this.ReadFromJsonButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ReadFromJsonButton.Image = ((System.Drawing.Image)(resources.GetObject("ReadFromJsonButton.Image")));
+            this.ReadFromJsonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ReadFromJsonButton.Name = "ReadFromJsonButton";
+            this.ReadFromJsonButton.Size = new System.Drawing.Size(72, 22);
+            this.ReadFromJsonButton.Text = "从文件读取";
+            this.ReadFromJsonButton.Click += new System.EventHandler(this.ReadFromJsonButton_Click);
+            // 
             // Table2RightMenu
             // 
             this.Table2RightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.清空ToolStripMenuItem,
+            this.导出列表到JSONToolStripMenuItem});
             this.Table2RightMenu.Name = "contextMenuStrip1";
-            this.Table2RightMenu.Size = new System.Drawing.Size(153, 48);
+            this.Table2RightMenu.Size = new System.Drawing.Size(169, 70);
             // 
             // toolStripMenuItem1
             // 
@@ -418,15 +410,53 @@
             this.toolStripMenuItem1.Text = "复制";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
+            // 清空ToolStripMenuItem
+            // 
+            this.清空ToolStripMenuItem.Name = "清空ToolStripMenuItem";
+            this.清空ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.清空ToolStripMenuItem.Text = "清空";
+            this.清空ToolStripMenuItem.Click += new System.EventHandler(this.清空ToolStripMenuItem_Click);
+            // 
+            // 导出列表到JSONToolStripMenuItem
+            // 
+            this.导出列表到JSONToolStripMenuItem.Name = "导出列表到JSONToolStripMenuItem";
+            this.导出列表到JSONToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.导出列表到JSONToolStripMenuItem.Text = "导出列表到JSON";
+            this.导出列表到JSONToolStripMenuItem.Click += new System.EventHandler(this.导出列表到JSONToolStripMenuItem_Click);
+            // 
+            // Hostname
+            // 
+            this.Hostname.HeaderText = "主机名";
+            this.Hostname.Name = "Hostname";
+            this.Hostname.ReadOnly = true;
+            // 
+            // Host
+            // 
+            this.Host.HeaderText = "IP";
+            this.Host.Name = "Host";
+            this.Host.ReadOnly = true;
+            // 
+            // Dalay
+            // 
+            this.Dalay.HeaderText = "延迟(ms)";
+            this.Dalay.Name = "Dalay";
+            this.Dalay.ReadOnly = true;
+            // 
+            // Status
+            // 
+            this.Status.HeaderText = "HTTP状态码";
+            this.Status.Name = "Status";
+            this.Status.ReadOnly = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(736, 469);
+            this.ClientSize = new System.Drawing.Size(754, 461);
             this.Controls.Add(this.tabControl1);
-            this.MinimumSize = new System.Drawing.Size(750, 500);
+            this.MinimumSize = new System.Drawing.Size(770, 500);
             this.Name = "MainWindow";
-            this.Text = "Lookup IP";
+            this.Text = "NetWork Test";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.Table1RightMenu.ResumeLayout(false);
@@ -478,12 +508,15 @@
         private System.Windows.Forms.ToolStripComboBox DNSServer;
         private System.Windows.Forms.ToolStripButton HTTPStatusButton;
         private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.ContextMenuStrip Table2RightMenu;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripButton ReadFromJsonButton;
+        private System.Windows.Forms.ToolStripMenuItem 清空ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 导出列表到JSONToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Hostname;
         private System.Windows.Forms.DataGridViewTextBoxColumn Host;
         private System.Windows.Forms.DataGridViewTextBoxColumn Dalay;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
-        private System.Windows.Forms.ContextMenuStrip Table2RightMenu;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

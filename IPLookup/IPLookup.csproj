@@ -38,6 +38,9 @@
     <Reference Include="LumiSoft.Net, Version=4.5.5702.26517, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LumiSoft.Net.dll.4.5.5702.26503\lib\net45\Release\LumiSoft.Net.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IP.cs" />
+    <Compile Include="JsonReader.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>

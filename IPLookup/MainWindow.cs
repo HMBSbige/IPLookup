@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -24,7 +23,6 @@ namespace IPLookup
             // 监视剪贴板
             AddClipboardFormatListener(Handle);
             AutoLookupIP = AutoLookup;
-            HttpLookup = TestHttpWithIp;
             //不缓存ServicePoint
             ServicePointManager.MaxServicePointIdleTime = 0;
         }
@@ -100,7 +98,8 @@ namespace IPLookup
 
         // 定义回调
         private delegate void VoidMethod_Delegate();
-        private delegate void SSI_Delegate(string a,string b,int c);
+
+        private delegate void UpdateDataGridView2_Delegate(D2data dd);
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -131,6 +130,7 @@ namespace IPLookup
             dataGridView1.Rows[Index].Cells[@"IPIPNETCN"].Value = string.Join(",", cn_location);
             dataGridView1.Rows[Index].Cells[@"IPIPNETEn"].Value = string.Join(",", en_location);
             dataGridView1.Rows[Index].Cells[@"CZDB"].Value = string.Join(",", location);
+            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.Rows.Count - 1;
         }
         private void Lookup_button_Click(object sender, EventArgs e)
         {
@@ -195,6 +195,8 @@ namespace IPLookup
 
         #region HTTPlookup
 
+        private const int Timeout = 3000;
+
         private static string[] Nslookup(string hostname)
         {
             try
@@ -210,7 +212,15 @@ namespace IPLookup
 
         private string[] Nslookup(string hostname, string[] DnsServers)
         {
-            Dns_Client.DnsServers = DnsServers;
+            try
+            {
+                Dns_Client.DnsServers = DnsServers;
+            }
+            catch (Exception ex)
+            {
+                HTTPStatus.Text = @"DNS 服务器错误: "+ex.Message;
+                return new string[0];
+            }
             Dns_Client.UseDnsCache = false;
             using (var dns = new Dns_Client())
             {
@@ -279,15 +289,13 @@ namespace IPLookup
             });
         }
 
-        private readonly SSI_Delegate HttpLookup;
-
         private void HTTPStatusButton_Click(object sender, EventArgs e)
         {
             HTTPStatusButton.Enabled = false;
             Task t = new Task(() =>
             {
-                BeginInvoke(HttpLookup,hostnameTextBox.Text.Trim(), hostIPTextBox.Text.Trim(), 3000);
-                
+                var dd=TestHttpWithIp(hostnameTextBox.Text.Trim(), hostIPTextBox.Text.Trim(), Timeout);
+                BeginInvoke(new UpdateDataGridView2_Delegate(UpdateDataGridView2),dd);
             });
             t.Start();
             t.ContinueWith(task =>
@@ -318,17 +326,122 @@ namespace IPLookup
             }
         }
 
-        private void TestHttpWithIp(string hostname,string ip, int timeout)
+        private void ReadFromJsonButton_Click(object sender, EventArgs e)
+        {
+            ReadFromJsonButton.Enabled = false;
+            var dia = new OpenFileDialog
+            {
+                InitialDirectory = Application.StartupPath,
+                Title = @"请选择文件",
+                Filter = @"|*.json"
+            };
+            dia.ShowDialog();
+            var JSONfilename = dia.FileName;
+            if (string.IsNullOrEmpty(JSONfilename))
+            {
+                ReadFromJsonButton.Enabled = true;
+                return;
+            }
+            List<HostList> list = JsonReader.ReadList(JSONfilename);
+            if (list == null)
+            {
+                HTTPStatus.Text = @"列表读取错误";
+                ReadFromJsonButton.Enabled = true;
+                return;
+            }
+            HTTPStatus.Text = @"列表读取成功";
+            Parallel.ForEach(list, l =>
+            {
+                Task.Run(() =>
+                {
+                    var dd = TestHttpWithIp(l.host.Trim(), l.ip.Trim(), Timeout);
+                    BeginInvoke(new UpdateDataGridView2_Delegate(UpdateDataGridView2), dd);
+                });
+            });
+            ReadFromJsonButton.Enabled = true;
+        }
+
+        private void UpdateDataGridView2(D2data dd)
         {
             var Index = dataGridView2.Rows.Add();
-            dataGridView2.Rows[Index].Cells[@"Hostname"].Value = hostname;
-            dataGridView2.Rows[Index].Cells[@"Host"].Value = ip;
+            dataGridView2.Rows[Index].Cells[@"Hostname"].Value = dd.hostname;
+            dataGridView2.Rows[Index].Cells[@"Host"].Value = dd.ip;
+            if (dd.dalay < 2000)
+            {
+                dataGridView2.Rows[Index].Cells[@"Dalay"].Style.ForeColor = Color.Green;
+            }
+            else if (dd.dalay < 3000)
+            {
+                dataGridView2.Rows[Index].Cells[@"Dalay"].Style.ForeColor = Color.Coral;
+            }
+            else
+            {
+                dataGridView2.Rows[Index].Cells[@"Dalay"].Style.ForeColor = Color.Red;
+            }
+            dataGridView2.Rows[Index].Cells[@"Dalay"].Value = dd.dalay;
+            dataGridView2.Rows[Index].Cells[@"Status"].Value = dd.status;
+            dataGridView2.FirstDisplayedScrollingRowIndex = dataGridView2.Rows.Count - 1;
+        }
+
+        private struct D2data
+        {
+            public string hostname;
+            public string ip;
+            public int dalay;
+            public string status;
+        }
+
+        private void 清空ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dataGridView2.Rows.Clear();
+        }
+
+        private void 导出列表到JSONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog
+            {
+                InitialDirectory = Application.StartupPath,
+                Title = @"请选择要保存的文件",
+                Filter = @"|*.json"
+            };
+            sfd.ShowDialog(this);
+
+            var Path = sfd.FileName;
+            var num = dataGridView2.Rows.Count;
+            var list=new List<HostList>();
+            for (var i = 0; i < num; ++i)
+            {
+                var hl = new HostList
+                {
+                    host = dataGridView2.Rows[i].Cells[@"Hostname"].Value.ToString(),
+                    ip = dataGridView2.Rows[i].Cells[@"Host"].Value.ToString()
+                };
+                list.Add(hl);
+            }
+            try
+            {
+                JsonReader.WriteList(Path, list);
+                HTTPStatus.Text = @"导出成功";
+            }
+            catch
+            {
+                HTTPStatus.Text = @"导出失败";
+            }
+        }
+
+        private static D2data TestHttpWithIp(string hostname,string ip, int timeout)
+        {
+            D2data dd = new D2data
+            {
+                hostname = hostname,
+                ip=ip
+            };
             var request = (HttpWebRequest)WebRequest.Create(@"http://" + hostname + @"/");
             try
             {
                 request.Timeout = timeout;
                
-                if (!string.IsNullOrEmpty(hostIPTextBox.Text))
+                if (!string.IsNullOrEmpty(ip))
                 {
                     request.Proxy = new WebProxy(ip);
                 }
@@ -350,24 +463,22 @@ namespace IPLookup
                 timer.Stop();
 
                 var timeSpan = timer.Elapsed;
-                dataGridView2.Rows[Index].Cells[@"Host"].Value = remoteEP?.Address.ToString() ?? request.Address.Host;
-                var dalay = (int) timeSpan.TotalMilliseconds;
-                dataGridView2.Rows[Index].Cells[@"Dalay"].Style.ForeColor = dalay < 2000 ? Color.Green : Color.Coral;
-                dataGridView2.Rows[Index].Cells[@"Dalay"].Value = dalay.ToString(CultureInfo.InvariantCulture) + @"ms";
-                dataGridView2.Rows[Index].Cells[@"Status"].Value = Convert.ToInt32(response.StatusCode).ToString();
+                dd.ip = remoteEP?.Address.ToString() ?? request.Address.Host;
+                dd.dalay = (int) timeSpan.TotalMilliseconds;
+                dd.status = Convert.ToInt32(response.StatusCode).ToString();
             }
             catch (WebException ex)
             {
                 var res = (HttpWebResponse) ex.Response;
                 var status = res == null ? ex.Message : Convert.ToInt32(res.StatusCode).ToString();
-                dataGridView2.Rows[Index].Cells[@"Dalay"].Style.ForeColor = Color.Red;
-                dataGridView2.Rows[Index].Cells[@"Dalay"].Value = timeout + @"ms";
-                dataGridView2.Rows[Index].Cells[@"Status"].Value = status;
+                dd.dalay = timeout;
+                dd.status = status;
             }
             finally
             {
                 request.Abort();
             }
+            return dd;
         }
 
         #endregion
